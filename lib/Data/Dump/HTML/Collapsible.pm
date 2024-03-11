@@ -295,9 +295,14 @@ representation of data structure.
 
 =head1 SEE ALSO
 
-L<Data::Dumper::HTML>
+Other data structure dumpers to (collapsible) tree: L<Data::HTML::TreeDumper>,
+L<Data::TreeDumper> (L<Data::TreeDumper::Renderer::DHTML>,
+L<Data::TreeDumper::Renderer::GTK>), L<Data::Dumper::GUI>.
 
-Other data structure dumpers like L<Data::Dumper>, L<Data::Dump>,
+Other data structure dumpers that outputs to HTML: L<Data::HTMLDumper>,
+L<Data::Dumper::HTML>, L<Data::Format::Pretty::HTML>.
+
+Other data structure dumpers: L<Data::Dumper>, L<Data::Dump>,
 L<Data::Dump::Color>, L<Data::Dmp>, L<Data::Printer>.
 
 =cut
