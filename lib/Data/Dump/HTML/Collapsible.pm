@@ -229,6 +229,10 @@ This module is a L<Data::Dump> variant that dumps Perl data structure to HTML
 document where you can expand and collapse nodes to drill down and roll up your
 data. It currently uses the C<< <summary> >> and C<< <details> >> HTML elements.
 
+There are other collapsible HTML dumper modules on CPN (see L</SEE ALSO>). This
+module tries to make its text output valid Perl while adding some visual cues
+to let human reader track the nodes more easily.
+
 
 =head1 FUNCTIONS
 
