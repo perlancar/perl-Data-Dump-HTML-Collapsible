@@ -102,7 +102,7 @@ sub _quote_key {
 }
 
 sub _dump {
-    my ($val, $subscript) = @_;
+    my ($val, $subscript, $depth) = @_;
 
     my $ref = ref($val);
     if ($ref eq '') {
@@ -148,21 +148,21 @@ sub _dump {
     my $res = "";
     $res .= "<a name=r$refaddr></a>";
     if ($ref eq 'ARRAY') {
-        $res .= "<details><summary># $subscript ARRAY(0x$refaddr)</summary>[";
+        $res .= "<details><summary># ARRAY(0x$refaddr)</summary>[";
         my $i = 0;
         for (@$val) {
-            $res .= ",\n" if $i;
-            $res .= _dump($_, "$subscript\[$i]");
+            $res .= ",   # ".("." x $depth)."[".($i-1)."]\n" if $i;
+            $res .= _dump($_, "$subscript\[$i]", $depth+1);
             $i++;
         }
         $res .= "]</details>";
     } elsif ($ref eq 'HASH') {
-        $res .= "<details><summary># $subscript HASH(0x$refaddr)</summary>{";
+        $res .= "<details><summary># HASH(0x$refaddr)</summary>{";
         my $i = 0;
         for (sort keys %$val) {
-            $res .= ",\n" if $i;
+            $res .= ",   # ".("." x $depth)."{".($i-1)."}\n" if $i;
             my $k = _quote_key($_);
-            my $v = _dump($val->{$_}, "$subscript\{$k}");
+            my $v = _dump($val->{$_}, "$subscript\{$k}", $depth+1);
             $res .= "$k =&gt; $v";
             $i++;
         }
@@ -194,9 +194,9 @@ sub _dd_or_dump {
 
     my $res;
     if (@_ > 1) {
-        $res = "(" . join(",", map {_dump($_, '')} @_) . ")";
+        $res = "(" . join(",\n", map {_dump($_, '', 0)} @_) . ")";
     } else {
-        $res = _dump($_[0], '');
+        $res = _dump($_[0], '', 0);
     }
     if (@_fixups) {
         $res = "do { my \$var = $res;\n" . join("", @_fixups) . "\$var }";
