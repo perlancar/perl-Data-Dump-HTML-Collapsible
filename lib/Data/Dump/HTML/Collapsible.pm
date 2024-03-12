@@ -123,13 +123,13 @@ sub _dump {
             return _double_quote($val);
         }
     }
-    my $refaddr = refaddr($val);
+    my $refaddr = sprintf("%x", refaddr($val));
     $_subscripts{$refaddr} //= $subscript;
     if ($_seen_refaddrs{$refaddr}++) {
         my $target = "\$var" .
             ($_subscripts{$refaddr} ? "->$_subscripts{$refaddr}" : "");
-        push @_fixups, "\$var->$subscript=$target;";
-        return _single_quote($target);
+        push @_fixups, "\$var->$subscript = $target;\n";
+        return "<a href=#r$refaddr>"._single_quote($target)."</a>";
     }
 
     my $class;
@@ -145,9 +145,10 @@ sub _dump {
         $ref = reftype($val);
     }
 
-    my $res;
+    my $res = "";
+    $res .= "<a name=r$refaddr></a>";
     if ($ref eq 'ARRAY') {
-        $res = "<details><summary>$subscript ".encode_entities("$val")."</summary>[";
+        $res .= "<details><summary># $subscript ARRAY(0x$refaddr)</summary>[";
         my $i = 0;
         for (@$val) {
             $res .= ",\n" if $i;
@@ -156,7 +157,7 @@ sub _dump {
         }
         $res .= "]</details>";
     } elsif ($ref eq 'HASH') {
-        $res = "<details><summary>$subscript ".encode_entities("$val")."</summary>{";
+        $res .= "<details><summary># $subscript HASH(0x$refaddr)</summary>{";
         my $i = 0;
         for (sort keys %$val) {
             $res .= ",\n" if $i;
@@ -168,14 +169,14 @@ sub _dump {
         $res .= "}</details>";
     } elsif ($ref eq 'SCALAR') {
         if (defined $class) {
-            $res = "do { my \$o="._dump($$val, $subscript)."; \\\$o}";
+            $res .= "do { my \$o="._dump($$val, $subscript)."; \\\$o}";
         } else {
-            $res = "\\"._dump($$val, $subscript);
+            $res .= "\\"._dump($$val, $subscript);
         }
     } elsif ($ref eq 'REF') {
-        $res = "\\"._dump($$val, $subscript);
+        $res .= "\\"._dump($$val, $subscript);
     } elsif ($ref eq 'CODE') {
-        $res = $OPT_DEPARSE ? _dump_code($val) : 'sub{"DUMMY"}';
+        $res .= $OPT_DEPARSE ? _dump_code($val) : 'sub{"DUMMY"}';
     } else {
         die "Sorry, I can't dump $val (ref=$ref) yet";
     }
@@ -198,7 +199,7 @@ sub _dd_or_dump {
         $res = _dump($_[0], '');
     }
     if (@_fixups) {
-        $res = "do{my\$var=$res;" . join("", @_fixups) . "\$var}";
+        $res = "do { my \$var = $res;\n" . join("", @_fixups) . "\$var }";
     }
 
     $res = "<style>details {  margin-left: 1em; } summary { margin-left: -1em; }</style><pre>$res</pre>";
