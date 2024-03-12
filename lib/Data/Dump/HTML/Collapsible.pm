@@ -148,7 +148,7 @@ sub _dump {
     my $res = "";
     $res .= "<a name=r$refaddr></a>";
     if ($ref eq 'ARRAY') {
-        $res .= "<details><summary># ARRAY(0x$refaddr)</summary>[";
+        $res .= "<details><summary># ARRAY(0x$refaddr) elems=".(scalar @$val)."</summary>[";
         my $i = 0;
         for (@$val) {
             $res .= ",   # ".("." x $depth)."[".($i-1)."]\n" if $i;
@@ -157,7 +157,7 @@ sub _dump {
         }
         $res .= "]</details>";
     } elsif ($ref eq 'HASH') {
-        $res .= "<details><summary># HASH(0x$refaddr)</summary>{";
+        $res .= "<details><summary># HASH(0x$refaddr) keys=".(scalar keys %$val)."</summary>{";
         my $i = 0;
         for (sort keys %$val) {
             $res .= ",   # ".("." x $depth)."{".($i-1)."}\n" if $i;
