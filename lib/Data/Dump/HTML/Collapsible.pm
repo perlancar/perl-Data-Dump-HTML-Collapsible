@@ -224,9 +224,9 @@ sub dump { goto &_dd_or_dump }
 
 =head1 DESCRIPTION
 
-This module dumps Perl data structure to HTML document where you can expand and
-collapse nodes to drill down and roll up your data. It currently uses the C<<
-<summary> >> and C<< <details> >> HTML elements.
+This module is a L<Data::Dump> variant that dumps Perl data structure to HTML
+document where you can expand and collapse nodes to drill down and roll up your
+data. It currently uses the C<< <summary> >> and C<< <details> >> HTML elements.
 
 
 =head1 FUNCTIONS
@@ -296,14 +296,14 @@ representation of data structure.
 =head1 SEE ALSO
 
 Other data structure dumpers to (collapsible) tree: L<Data::HTML::TreeDumper>
-(doesn't handle recursion), L<Data::TreeDumper>
-(L<Data::TreeDumper::Renderer::DHTML>, L<Data::TreeDumper::Renderer::GTK>),
-L<Data::Dumper::GUI>.
+(also uses C<< <details> >> and C<< <summary> >> HTML elements, doesn't handle
+recursion), L<Data::TreeDumper> (L<Data::TreeDumper::Renderer::DHTML>,
+L<Data::TreeDumper::Renderer::GTK>), L<Data::Dumper::GUI>.
 
 Other data structure dumpers that outputs to HTML: L<Data::HTMLDumper>,
 L<Data::Dumper::HTML>, L<Data::Format::Pretty::HTML>.
 
-Other data structure dumpers: L<Data::Dumper>, L<Data::Dump>,
+Other data structure dumpers, among others: L<Data::Dumper>, L<Data::Dump>,
 L<Data::Dump::Color>, L<Data::Dmp>, L<Data::Printer>.
 
 =cut
