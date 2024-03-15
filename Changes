@@ -1,3 +1,8 @@
+0.005   2024-03-16  Released-By: PERLANCAR; Urgency: medium
+
+        - Prevent multiple arguments for now.
+
+
 0.004   2024-03-12  Released-By: PERLANCAR; Urgency: medium
 
         - [ux] Show number of elements/keys of an array/hash in summary.
