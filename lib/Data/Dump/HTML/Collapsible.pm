@@ -194,7 +194,8 @@ sub _dd_or_dump {
 
     my $res;
     if (@_ > 1) {
-        $res = "(" . join(",\n", map {_dump($_, '', 0)} @_) . ")";
+        die "Currently multiple arguments are not supported, plese only pass 1 argument";
+        #$res = "(" . join(",\n", map {_dump($_, '', 0)} @_) . ")";
     } else {
         $res = _dump($_[0], '', 0);
     }
