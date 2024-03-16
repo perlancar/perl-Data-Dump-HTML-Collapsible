@@ -186,7 +186,6 @@ sub _dump {
 }
 
 our $_is_dd;
-our $_is_ellipsis;
 sub _dd_or_dump {
     local %_seen_refaddrs;
     local %_subscripts;
