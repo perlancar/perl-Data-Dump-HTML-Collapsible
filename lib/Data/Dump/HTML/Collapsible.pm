@@ -120,7 +120,7 @@ sub _dump {
                  ) {
             return $val;
         } else {
-            return _double_quote($val);
+            return encode_entities(_double_quote($val));
         }
     }
     my $refaddr = sprintf("%x", refaddr($val));
@@ -136,8 +136,8 @@ sub _dump {
 
     if ($ref eq 'Regexp' || $ref eq 'REGEXP') {
         require Regexp::Stringify;
-        return Regexp::Stringify::stringify_regexp(
-            regexp=>$val, with_qr=>1, plver=>$OPT_PERL_VERSION);
+        return encode_entities(Regexp::Stringify::stringify_regexp(
+            regexp=>$val, with_qr=>1, plver=>$OPT_PERL_VERSION));
     }
 
     if (blessed $val) {
@@ -161,7 +161,7 @@ sub _dump {
         my $i = 0;
         for (sort keys %$val) {
             $res .= ",   # ".("." x $depth)."{".($i-1)."}\n" if $i;
-            my $k = _quote_key($_);
+            my $k = encode_entities(_quote_key($_));
             my $v = _dump($val->{$_}, "$subscript\{$k}", $depth+1);
             $res .= "$k =&gt; $v";
             $i++;
@@ -176,12 +176,12 @@ sub _dump {
     } elsif ($ref eq 'REF') {
         $res .= "\\"._dump($$val, $subscript);
     } elsif ($ref eq 'CODE') {
-        $res .= $OPT_DEPARSE ? _dump_code($val) : 'sub{"DUMMY"}';
+        $res .= encode_entities($OPT_DEPARSE ? _dump_code($val) : 'sub{"DUMMY"}');
     } else {
         die "Sorry, I can't dump $val (ref=$ref) yet";
     }
 
-    $res = "bless($res,"._double_quote($class).")" if defined($class);
+    $res = "bless($res,".encode_entities(_double_quote($class)).")" if defined($class);
     $res;
 }
 
