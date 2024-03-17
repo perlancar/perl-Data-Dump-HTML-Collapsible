@@ -129,7 +129,7 @@ sub _dump {
         my $target = "\$var" .
             ($_subscripts{$refaddr} ? "->$_subscripts{$refaddr}" : "");
         push @_fixups, "\$var->$subscript = $target;\n";
-        return "<a href=#r$refaddr>"._single_quote($target)."</a>";
+        return "<a href=#r$refaddr>".encode_entities(_single_quote($target))."</a>";
     }
 
     my $class;
