@@ -1,3 +1,10 @@
+0.006   2024-03-17  Released-By: PERLANCAR; Urgency: low
+
+        - No functional changes.
+
+        - [doc] Mention Data::Dump::HTML::PopUp.
+
+
 0.005   2024-03-16  Released-By: PERLANCAR; Urgency: medium
 
         - Prevent multiple arguments for now.
