@@ -199,7 +199,7 @@ sub _dd_or_dump {
         $res = _dump($_[0], '', 0);
     }
     if (@_fixups) {
-        $res = "do { my \$var = $res;\n" . join("", @_fixups) . "\$var }";
+        $res = "do { my \$var = $res;\n" . join("", map {encode_entities $_} @_fixups) . "\$var }";
     }
 
     $res = "<style>details {  margin-left: 1em; } summary { margin-left: -1em; }</style><pre>$res</pre>";
